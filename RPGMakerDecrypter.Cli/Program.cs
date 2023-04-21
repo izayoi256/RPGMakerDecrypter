@@ -51,7 +51,16 @@ namespace RPGMakerDecrypter.Cli
                     case RPGMakerVersion.Xp:
                     case RPGMakerVersion.Vx:
                         RGSSADv1 rgssadv1 = new RGSSADv1(_commandLineOptions.InputPath);
-                        rgssadv1.ExtractAllFiles(outputDirectoryPath);
+                        foreach (ArchivedFile archivedFile in rgssadv1.ArchivedFiles)
+                        {
+                            try
+                            {
+                                rgssadv1.ExtractFile(archivedFile, outputDirectoryPath);
+                            } catch (Exception)
+                            {
+                                Console.WriteLine("Failed to extract: {0}", archivedFile.Name);
+                            }
+                        }
                         break;
                     case RPGMakerVersion.VxAce:
                         RGSSADv3 rgssadv2 = new RGSSADv3(_commandLineOptions.InputPath);
